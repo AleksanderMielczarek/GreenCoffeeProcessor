@@ -1,0 +1,33 @@
+ext {
+    //version
+    versionMajor = 0
+    versionMinor = 1
+    versionFix = 0
+
+    //tools
+    minSdkVersionVersion = 14
+    sdkVersion = 27
+    buildToolsVersionVersion = "27.0.3"
+    mavenVersion = '2.0'
+
+    //plugins
+    toolsVersion = '3.0.1'
+    versionsVersion = '0.17.0'
+
+    //kotlin
+    kotlinVersion = '1.2.21'
+
+    //test
+    junitVersion = '4.12'
+    mockitoVersion = '2.15.0'
+    mockitokotlinVersion = '1.5.0'
+    espressoCoreVersion = '3.0.1'
+    runnerVersion = '1.0.1'
+    greencoffeeVersion = '3.0.0'
+
+    //support
+    supportLibraryVersion = '27.0.2'
+
+    //utils
+    kotlinPoetVersion = '0.6.0'
+}

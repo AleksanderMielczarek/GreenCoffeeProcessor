@@ -1,0 +1,13 @@
+apply plugin: 'kotlin'
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    implementation("com.squareup:kotlinpoet:$kotlinPoetVersion") {
+        exclude group: "org.jetbrains.kotlin"
+    }
+    compileOnly project(':greencoffee')
+    implementation project(':greencoffee-annotations')
+}
