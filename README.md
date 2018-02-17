@@ -65,11 +65,11 @@ kapt {
 }
 ```
 
-## TODO
+## Changelog
+
+### 0.3.0 (2018-02-17)
 
 - fix dummy file warning
-
-## Changelog
 
 ### 0.2.1 (2018-02-17)
 
