@@ -62,7 +62,7 @@ class GreenCoffeeProcessor : AbstractProcessor() {
         val feature = Files.newInputStream(fileHelper.getAndroidTestPath().resolve(Paths.get(greenCoffee.featureFromAssets)))
         return GreenCoffeeConfig(greenCoffee.screenshotPath)
                 .withFeatureFromInputStream(feature)
-                .scenarios()
+                .scenarios(*greenCoffee.locales.toTypedArray())
                 .filter {
                     if (greenCoffee.includeScenarios.isNotEmpty()) {
                         greenCoffee.includeScenarios.contains(it.scenario().name())

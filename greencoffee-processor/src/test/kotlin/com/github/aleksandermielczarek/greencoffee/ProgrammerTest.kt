@@ -9,6 +9,7 @@ import org.junit.runner.RunWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
+import java.util.*
 import javax.lang.model.element.TypeElement
 
 /**
@@ -41,13 +42,14 @@ class ProgrammerTest {
             import android.support.test.filters.LargeTest
             import android.support.test.runner.AndroidJUnit4
             import com.mauriciotogneri.greencoffee.GreenCoffeeConfig
+            import java.util.Locale
             import org.junit.runner.RunWith
 
             @LargeTest
             @RunWith(AndroidJUnit4::class)
             class GreenCoffeeTest1 : Test(GreenCoffeeConfig("screenshotPath")
               .withFeatureFromAssets("featurePath")
-              .scenarios()
+              .scenarios(Locale("en", "GB", ""))
               .filter { listOf("include").contains(it.scenario().name()) }
               .filter { !listOf("exclude").contains(it.scenario().name()) }
               [0]
@@ -59,6 +61,7 @@ class ProgrammerTest {
                 GreenCoffeeData(
                         "screenshotPath",
                         "featurePath",
+                        listOf(Locale("en", "GB", "")),
                         listOf("include"),
                         listOf("exclude")
                 ),
@@ -93,6 +96,7 @@ class ProgrammerTest {
                         "screenshotPath",
                         "",
                         emptyList(),
+                        emptyList(),
                         emptyList()
                 ),
                 1
@@ -125,6 +129,42 @@ class ProgrammerTest {
                 GreenCoffeeData(
                         "",
                         "featurePath",
+                        emptyList(),
+                        emptyList(),
+                        emptyList()
+                ),
+                1
+        )
+
+        assertEquals(expected.trimIndent(), code.toString().trimIndent())
+    }
+
+    @Test
+    internal fun `should write locale`() {
+        val expected = """
+            package com.test
+
+            import android.support.test.filters.LargeTest
+            import android.support.test.runner.AndroidJUnit4
+            import com.mauriciotogneri.greencoffee.GreenCoffeeConfig
+            import java.util.Locale
+            import org.junit.runner.RunWith
+
+            @LargeTest
+            @RunWith(AndroidJUnit4::class)
+            class GreenCoffeeTest1 : Test(GreenCoffeeConfig("")
+              .withFeatureFromAssets("")
+              .scenarios(Locale("en", "GB", ""), Locale("es", "ES", "2"))
+              [0]
+            )
+        """
+
+        val code = programmer.writeCode(
+                test,
+                GreenCoffeeData(
+                        "",
+                        "",
+                        listOf(Locale("en", "GB", ""), Locale("es", "ES", "2")),
                         emptyList(),
                         emptyList()
                 ),
@@ -159,6 +199,7 @@ class ProgrammerTest {
                 GreenCoffeeData(
                         "",
                         "",
+                        emptyList(),
                         listOf("include1", "include2"),
                         emptyList()
                 ),
@@ -193,6 +234,7 @@ class ProgrammerTest {
                 GreenCoffeeData(
                         "",
                         "",
+                        emptyList(),
                         emptyList(),
                         listOf("exclude1", "exclude2")
                 ),
@@ -234,6 +276,7 @@ class ProgrammerTest {
                 GreenCoffeeData(
                         "",
                         "",
+                        emptyList(),
                         emptyList(),
                         emptyList()
                 ),

@@ -8,6 +8,7 @@ package com.github.aleksandermielczarek.greencoffee
 annotation class GreenCoffee(
         val screenshotPath: String = "",
         val featureFromAssets: String = "",
+        val locales: Array<ScenarioLocale> = [],
         val includeScenarios: Array<String> = [],
         val excludeScenarios: Array<String> = []
 )

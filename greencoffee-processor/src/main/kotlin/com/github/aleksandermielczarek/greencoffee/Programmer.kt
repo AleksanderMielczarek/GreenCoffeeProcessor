@@ -2,6 +2,7 @@ package com.github.aleksandermielczarek.greencoffee
 
 import com.mauriciotogneri.greencoffee.GreenCoffeeConfig
 import com.squareup.kotlinpoet.*
+import java.util.*
 import javax.lang.model.element.TypeElement
 
 /**
@@ -22,7 +23,7 @@ class Programmer(private val typeHelper: TypeHelper) {
                         .addStatement("%T(\"${greenCoffee.screenshotPath}\")", GreenCoffeeConfig::class)
                         .indent()
                         .addStatement(".withFeatureFromAssets(\"${greenCoffee.featureFromAssets}\")")
-                        .addStatement(".scenarios()")
+                        .addStatement(".scenarios(${greenCoffee.locales.joinToString(", ") { "%T(\"${it.language}\", \"${it.country}\", \"${it.variant}\")" }})", *Collections.nCopies(greenCoffee.locales.size, Locale::class).toTypedArray())
                         .apply {
                             if (greenCoffee.includeScenarios.isNotEmpty()) {
                                 addStatement(".filter { ${createListFromArray(greenCoffee.includeScenarios)}.contains(it.scenario().name()) }")
