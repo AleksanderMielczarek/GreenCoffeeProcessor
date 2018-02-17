@@ -1,17 +1,12 @@
 package com.github.aleksandermielczarek.greencoffee
 
 import com.mauriciotogneri.greencoffee.GreenCoffeeConfig
-import com.squareup.kotlinpoet.*
-import java.io.File
-import java.io.InputStream
-import java.nio.file.Files
-import java.nio.file.Paths
 import javax.annotation.processing.AbstractProcessor
+import javax.annotation.processing.ProcessingEnvironment
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.SourceVersion
 import javax.lang.model.element.ElementKind
 import javax.lang.model.element.TypeElement
-import javax.tools.Diagnostic
 
 
 /**
@@ -22,6 +17,11 @@ class GreenCoffeeProcessor : AbstractProcessor() {
     companion object {
         const val OPTIONS_APP_FOLDER = "appFolder"
     }
+
+    private lateinit var typeHelper: TypeHelper
+    private lateinit var fileHelper: FileHelper
+    private lateinit var programmer: Programmer
+    private lateinit var writer: Writer
 
     override fun getSupportedSourceVersion(): SourceVersion? {
         return SourceVersion.latestSupported()
@@ -35,47 +35,30 @@ class GreenCoffeeProcessor : AbstractProcessor() {
         return mutableSetOf(OPTIONS_APP_FOLDER)
     }
 
+    override fun init(processingEnv: ProcessingEnvironment) {
+        super.init(processingEnv)
+        typeHelper = TypeHelper(processingEnv)
+        fileHelper = FileHelper(processingEnv)
+        programmer = Programmer(typeHelper)
+        writer = Writer(processingEnv)
+    }
+
     override fun process(annotations: MutableSet<out TypeElement>, roundEnv: RoundEnvironment): Boolean {
         roundEnv.getElementsAnnotatedWith(GreenCoffee::class.java)
                 .filter { it.kind == ElementKind.CLASS }
                 .map { it as TypeElement }
                 .forEach {
-                    val impls = createTestImpls(it, it.getAnnotation(GreenCoffee::class.java))
-                    val impl = createTestImpl(it, impls)
-                    writeTestImpl(impl)
+                    val greenCoffee = GreenCoffeeData.fromGreenCoffee(it.getAnnotation(GreenCoffee::class.java))
+                    val scenarios = countScenarios(greenCoffee)
+                    val code = programmer.writeCode(it, greenCoffee, scenarios)
+                    writer.writeFile(code)
                 }
         return true
     }
 
-    private fun createTestImpls(test: TypeElement, greenCoffee: GreenCoffee): List<TypeSpec> {
-        val scenarios = countScenarios(greenCoffee)
-        return IntRange(0, scenarios - 1).map { createSingleTestImpl(test, greenCoffee, it) }
-    }
-
-    private fun createTestImpl(test: TypeElement, impls: List<TypeSpec>): FileSpec {
-        return FileSpec.builder(processingEnv.elementUtils.getPackageOf(test).qualifiedName.toString(), "GreenCoffee${test.simpleName}")
-                .apply {
-                    impls.forEach { impl -> addType(impl) }
-                }
-                .build()
-    }
-
-    private fun writeTestImpl(test: FileSpec) {
-        val kaptGeneratedDirPath = processingEnv.options["kapt.kotlin.generated"]?.replace("kaptKotlin", "kapt")
-                ?: run {
-                    processingEnv.messager.printMessage(Diagnostic.Kind.ERROR, "Can't find the target directory for generated Kotlin files.")
-                    throw IllegalStateException()
-                }
-        val kaptGeneratedDir = File(kaptGeneratedDirPath)
-        if (!kaptGeneratedDir.parentFile.exists()) {
-            kaptGeneratedDir.parentFile.mkdirs()
-        }
-        test.writeTo(kaptGeneratedDir)
-    }
-
-    private fun countScenarios(greenCoffee: GreenCoffee): Int {
+    private fun countScenarios(greenCoffee: GreenCoffeeData): Int {
         return GreenCoffeeConfig(greenCoffee.screenshotPath)
-                .withFeatureFromInputStream(featureFile(greenCoffee))
+                .withFeatureFromInputStream(fileHelper.getFeatureFile(greenCoffee))
                 .scenarios()
                 .filter {
                     if (greenCoffee.includeScenarios.isNotEmpty()) {
@@ -92,45 +75,5 @@ class GreenCoffeeProcessor : AbstractProcessor() {
                     }
                 }
                 .count()
-    }
-
-    private fun featureFile(greenCoffee: GreenCoffee): InputStream {
-        val coffeePath = Paths.get(processingEnv.filer.createSourceFile("GreenCoffeeProcessor_${System.currentTimeMillis()}").toUri())
-        val appName = processingEnv.options[OPTIONS_APP_FOLDER] ?: "app"
-        val testPath = coffeePath.find { Files.isDirectory(it) && it.endsWith(appName) } ?: run {
-            processingEnv.messager.printMessage(Diagnostic.Kind.ERROR, "Can't find app directory")
-            throw IllegalStateException()
-        }
-        return Files.newInputStream(testPath.resolve(Paths.get("src", "androidTest", greenCoffee.featureFromAssets)))
-    }
-
-    private fun createSingleTestImpl(test: TypeElement, greenCoffee: GreenCoffee, index: Int): TypeSpec {
-        return TypeSpec.classBuilder("GreenCoffee${test.simpleName}${index + 1}")
-                .superclass(test.asType().asTypeName())
-                .addSuperclassConstructorParameter(CodeBlock.builder()
-                        .addStatement("%T(\"${greenCoffee.screenshotPath}\")", GreenCoffeeConfig::class)
-                        .indent()
-                        .addStatement(".withFeatureFromAssets(\"${greenCoffee.featureFromAssets}\")")
-                        .addStatement(".scenarios()")
-                        .apply {
-                            if (greenCoffee.includeScenarios.isNotEmpty()) {
-                                addStatement(".filter { ${createListFromArray(greenCoffee.includeScenarios)}.contains(it.scenario().name()) }")
-                            }
-                            if (greenCoffee.excludeScenarios.isNotEmpty()) {
-                                addStatement(".filter { !${createListFromArray(greenCoffee.excludeScenarios)}.contains(it.scenario().name()) }")
-                            }
-                        }
-                        .addStatement("[$index]")
-                        .unindent()
-                        .build())
-                .addAnnotation(ClassName("android.support.test.filters", "LargeTest"))
-                .addAnnotation(AnnotationSpec.builder(ClassName("org.junit.runner", "RunWith"))
-                        .addMember(CodeBlock.of("%T::class", ClassName("android.support.test.runner", "AndroidJUnit4")))
-                        .build())
-                .build()
-    }
-
-    private fun <T> createListFromArray(array: Array<T>): String {
-        return "listOf(${array.joinToString(", ") { "\"$it\"" }})"
     }
 }
