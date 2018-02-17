@@ -71,6 +71,10 @@ kapt {
 
 ## Changelog
 
+### 0.2.1 (2018-02-17)
+
+- fix `FileHelper`
+
 ### 0.2.0 (2018-02-17)
 
 - add `Locale` support
