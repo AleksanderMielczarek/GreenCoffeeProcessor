@@ -1,6 +1,8 @@
 package com.github.aleksandermielczarek.greencoffee
 
 import com.mauriciotogneri.greencoffee.GreenCoffeeConfig
+import java.nio.file.Files
+import java.nio.file.Paths
 import javax.annotation.processing.AbstractProcessor
 import javax.annotation.processing.ProcessingEnvironment
 import javax.annotation.processing.RoundEnvironment
@@ -57,8 +59,9 @@ class GreenCoffeeProcessor : AbstractProcessor() {
     }
 
     private fun countScenarios(greenCoffee: GreenCoffeeData): Int {
+        val feature = Files.newInputStream(fileHelper.getAndroidTestPath().resolve(Paths.get(greenCoffee.featureFromAssets)))
         return GreenCoffeeConfig(greenCoffee.screenshotPath)
-                .withFeatureFromInputStream(fileHelper.getFeatureFile(greenCoffee))
+                .withFeatureFromInputStream(feature)
                 .scenarios()
                 .filter {
                     if (greenCoffee.includeScenarios.isNotEmpty()) {
