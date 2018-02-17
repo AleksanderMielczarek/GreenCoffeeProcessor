@@ -2,7 +2,7 @@ package com.github.aleksandermielczarek.greencoffee
 
 import com.mauriciotogneri.greencoffee.GreenCoffeeConfig
 import java.nio.file.Files
-import java.nio.file.Paths
+import java.nio.file.Path
 import javax.annotation.processing.AbstractProcessor
 import javax.annotation.processing.ProcessingEnvironment
 import javax.annotation.processing.RoundEnvironment
@@ -21,9 +21,9 @@ class GreenCoffeeProcessor : AbstractProcessor() {
     }
 
     private lateinit var typeHelper: TypeHelper
-    private lateinit var fileHelper: FileHelper
     private lateinit var programmer: Programmer
     private lateinit var writer: Writer
+    private lateinit var androidTestPath: Path
 
     override fun getSupportedSourceVersion(): SourceVersion? {
         return SourceVersion.latestSupported()
@@ -40,9 +40,11 @@ class GreenCoffeeProcessor : AbstractProcessor() {
     override fun init(processingEnv: ProcessingEnvironment) {
         super.init(processingEnv)
         typeHelper = TypeHelper(processingEnv)
-        fileHelper = FileHelper(processingEnv)
         programmer = Programmer(typeHelper)
         writer = Writer(processingEnv)
+
+        val fileHelper = FileHelper(processingEnv)
+        androidTestPath = fileHelper.getAndroidTestPath()
     }
 
     override fun process(annotations: MutableSet<out TypeElement>, roundEnv: RoundEnvironment): Boolean {
@@ -59,8 +61,8 @@ class GreenCoffeeProcessor : AbstractProcessor() {
     }
 
     private fun countScenarios(greenCoffee: GreenCoffeeData): Int {
-        val feature = Files.newInputStream(fileHelper.getAndroidTestPath().resolve(greenCoffee.featureFromAssets))
-        return GreenCoffeeConfig(greenCoffee.screenshotPath)
+        val feature = Files.newInputStream(androidTestPath.resolve(greenCoffee.featureFromAssets))
+        val scenarios = GreenCoffeeConfig(greenCoffee.screenshotPath)
                 .withFeatureFromInputStream(feature)
                 .scenarios(*greenCoffee.locales.toTypedArray())
                 .filter {
@@ -78,5 +80,7 @@ class GreenCoffeeProcessor : AbstractProcessor() {
                     }
                 }
                 .count()
+        feature.use { }
+        return scenarios
     }
 }

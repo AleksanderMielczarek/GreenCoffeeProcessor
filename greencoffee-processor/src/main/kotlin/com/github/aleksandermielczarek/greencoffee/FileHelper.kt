@@ -5,6 +5,8 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import javax.annotation.processing.ProcessingEnvironment
 import javax.tools.Diagnostic
+import javax.tools.StandardLocation
+
 
 /**
  * Created by Aleksander Mielczarek on 17.02.2018.
@@ -12,7 +14,7 @@ import javax.tools.Diagnostic
 class FileHelper(private val processingEnv: ProcessingEnvironment) {
 
     fun getAndroidTestPath(): Path {
-        val dummyFile = processingEnv.filer.createSourceFile("GreenCoffeeProcessor_${System.currentTimeMillis()}")
+        val dummyFile = processingEnv.filer.createResource(StandardLocation.CLASS_OUTPUT, "", "tmp")
         val dummyPath = Paths.get(dummyFile.toUri())
         val appName = processingEnv.options[GreenCoffeeProcessor.OPTIONS_APP_FOLDER] ?: "app"
         val appPath = dummyPath.find { Files.isDirectory(it) && it.endsWith(appName) } ?: run {

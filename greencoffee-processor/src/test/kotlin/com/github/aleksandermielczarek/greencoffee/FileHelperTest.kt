@@ -13,7 +13,7 @@ import java.net.URI
 import java.nio.file.Paths
 import javax.annotation.processing.Filer
 import javax.annotation.processing.ProcessingEnvironment
-import javax.tools.JavaFileObject
+import javax.tools.FileObject
 
 /**
  * Created by Aleksander Mielczarek on 17.02.2018.
@@ -25,7 +25,7 @@ class FileHelperTest {
     lateinit var processingEnv: ProcessingEnvironment
 
     @Mock
-    lateinit var dummyFile: JavaFileObject
+    lateinit var dummyFile: FileObject
 
     @Mock
     lateinit var filer: Filer
@@ -36,7 +36,7 @@ class FileHelperTest {
     @Before
     fun setUp() {
         given(processingEnv.filer).willReturn(filer)
-        given(filer.createSourceFile(any())).willReturn(dummyFile)
+        given(filer.createResource(any(), any(), any())).willReturn(dummyFile)
         given(dummyFile.toUri()).willReturn(URI.create("file:///C:/Projects/GreenCoffee/app/build/kapt/androidTest/dummy.java"))
     }
 
