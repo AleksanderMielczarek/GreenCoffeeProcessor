@@ -54,6 +54,16 @@ abstract class LoginTest(scenario: ScenarioConfig) : GreenCoffeeTest(scenario) {
 }
 ```
 
+If app folder is different than default app than specify it:
+
+```groovy
+kapt {
+    arguments {
+        arg("appFolder", "myApp")
+    }
+}
+```
+
 ## TODO
 
 - add `Locale` support
