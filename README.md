@@ -36,10 +36,11 @@ Instated of using parametrized test, just make your test abstract and annotate w
    
 ```kotlin
 @GreenCoffee(
-        screenshotPath = "pathToScreenshot",
+        screenshotPath = "testapp",
         featureFromAssets = "assets/login.feature",
-        includeScenarios = ["scenarioNameToInclude"],
-        excludeScenarios = ["scenarioNameToExclude"]
+        locales = [ScenarioLocale("en", "GB"), ScenarioLocale("es", "ES")],
+        includeScenarios = ["Invalid username and password", "Set of wrong credentials"],
+        excludeScenarios = ["Invalid username"]
 )
 abstract class LoginTest(scenario: ScenarioConfig) : GreenCoffeeTest(scenario) {
 
@@ -66,10 +67,13 @@ kapt {
 
 ## TODO
 
-- add `Locale` support
 - fix dummy file warning
 
 ## Changelog
+
+### 0.2.0 (2018-02-17)
+
+- add `Locale` support
 
 ### 0.1.0 (2018-02-16)
 
