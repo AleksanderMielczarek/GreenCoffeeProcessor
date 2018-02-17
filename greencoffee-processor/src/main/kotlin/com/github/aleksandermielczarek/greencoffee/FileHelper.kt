@@ -13,13 +13,14 @@ class FileHelper(private val processingEnv: ProcessingEnvironment) {
 
     fun getAndroidTestPath(): Path {
         val dummyFile = processingEnv.filer.createSourceFile("GreenCoffeeProcessor_${System.currentTimeMillis()}")
-        val processorPath = Paths.get(dummyFile.toUri())
+        val dummyPath = Paths.get(dummyFile.toUri())
         val appName = processingEnv.options[GreenCoffeeProcessor.OPTIONS_APP_FOLDER] ?: "app"
-        val testPath = processorPath.find { Files.isDirectory(it) && it.endsWith(appName) } ?: run {
+        val appPath = dummyPath.find { Files.isDirectory(it) && it.endsWith(appName) } ?: run {
             processingEnv.messager.printMessage(Diagnostic.Kind.ERROR, "Can't find app directory for appFolder: $appName")
             throw IllegalStateException()
         }
         dummyFile.delete()
-        return testPath.resolve(Paths.get("src", "androidTest"))
+        val appIndex = dummyPath.indexOf(appPath)
+        return dummyPath.root.resolve(dummyPath.subpath(0, appIndex + 1)).resolve(Paths.get("src", "androidTest"))
     }
 }

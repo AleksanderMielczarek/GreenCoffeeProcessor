@@ -59,7 +59,7 @@ class GreenCoffeeProcessor : AbstractProcessor() {
     }
 
     private fun countScenarios(greenCoffee: GreenCoffeeData): Int {
-        val feature = Files.newInputStream(fileHelper.getAndroidTestPath().resolve(Paths.get(greenCoffee.featureFromAssets)))
+        val feature = Files.newInputStream(fileHelper.getAndroidTestPath().resolve(greenCoffee.featureFromAssets))
         return GreenCoffeeConfig(greenCoffee.screenshotPath)
                 .withFeatureFromInputStream(feature)
                 .scenarios(*greenCoffee.locales.toTypedArray())
