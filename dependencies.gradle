@@ -29,5 +29,5 @@ ext {
     supportLibraryVersion = '27.0.2'
 
     //utils
-    kotlinPoetVersion = '0.6.0'
+    kotlinPoetVersion = '0.7.0'
 }

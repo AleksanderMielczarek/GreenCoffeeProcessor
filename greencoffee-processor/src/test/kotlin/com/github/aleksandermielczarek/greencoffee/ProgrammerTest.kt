@@ -48,11 +48,11 @@ class ProgrammerTest {
             @LargeTest
             @RunWith(AndroidJUnit4::class)
             class GreenCoffeeTest1 : Test(GreenCoffeeConfig("screenshotPath")
-              .withFeatureFromAssets("featurePath")
-              .scenarios(Locale("en", "GB", ""))
-              .filter { listOf("include").contains(it.scenario().name()) }
-              .filter { !listOf("exclude").contains(it.scenario().name()) }
-              [0]
+                .withFeatureFromAssets("featurePath")
+                .scenarios(Locale("en", "GB", ""))
+                .filter { listOf("include").contains(it.scenario().name()) }
+                .filter { !listOf("exclude").contains(it.scenario().name()) }
+                [0]
             )
         """
 
@@ -84,9 +84,9 @@ class ProgrammerTest {
             @LargeTest
             @RunWith(AndroidJUnit4::class)
             class GreenCoffeeTest1 : Test(GreenCoffeeConfig("screenshotPath")
-              .withFeatureFromAssets("")
-              .scenarios()
-              [0]
+                .withFeatureFromAssets("")
+                .scenarios()
+                [0]
             )
         """
 
@@ -118,9 +118,9 @@ class ProgrammerTest {
             @LargeTest
             @RunWith(AndroidJUnit4::class)
             class GreenCoffeeTest1 : Test(GreenCoffeeConfig("")
-              .withFeatureFromAssets("featurePath")
-              .scenarios()
-              [0]
+                .withFeatureFromAssets("featurePath")
+                .scenarios()
+                [0]
             )
         """
 
@@ -153,9 +153,9 @@ class ProgrammerTest {
             @LargeTest
             @RunWith(AndroidJUnit4::class)
             class GreenCoffeeTest1 : Test(GreenCoffeeConfig("")
-              .withFeatureFromAssets("")
-              .scenarios(Locale("en", "GB", ""), Locale("es", "ES", "2"))
-              [0]
+                .withFeatureFromAssets("")
+                .scenarios(Locale("en", "GB", ""), Locale("es", "ES", "2"))
+                [0]
             )
         """
 
@@ -187,10 +187,10 @@ class ProgrammerTest {
             @LargeTest
             @RunWith(AndroidJUnit4::class)
             class GreenCoffeeTest1 : Test(GreenCoffeeConfig("")
-              .withFeatureFromAssets("")
-              .scenarios()
-              .filter { listOf("include1", "include2").contains(it.scenario().name()) }
-              [0]
+                .withFeatureFromAssets("")
+                .scenarios()
+                .filter { listOf("include1", "include2").contains(it.scenario().name()) }
+                [0]
             )
         """
 
@@ -222,10 +222,10 @@ class ProgrammerTest {
             @LargeTest
             @RunWith(AndroidJUnit4::class)
             class GreenCoffeeTest1 : Test(GreenCoffeeConfig("")
-              .withFeatureFromAssets("")
-              .scenarios()
-              .filter { !listOf("exclude1", "exclude2").contains(it.scenario().name()) }
-              [0]
+                .withFeatureFromAssets("")
+                .scenarios()
+                .filter { !listOf("exclude1", "exclude2").contains(it.scenario().name()) }
+                [0]
             )
         """
 
@@ -257,17 +257,17 @@ class ProgrammerTest {
             @LargeTest
             @RunWith(AndroidJUnit4::class)
             class GreenCoffeeTest1 : Test(GreenCoffeeConfig("")
-              .withFeatureFromAssets("")
-              .scenarios()
-              [0]
+                .withFeatureFromAssets("")
+                .scenarios()
+                [0]
             )
 
             @LargeTest
             @RunWith(AndroidJUnit4::class)
             class GreenCoffeeTest2 : Test(GreenCoffeeConfig("")
-              .withFeatureFromAssets("")
-              .scenarios()
-              [1]
+                .withFeatureFromAssets("")
+                .scenarios()
+                [1]
             )
         """
 
