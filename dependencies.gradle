@@ -15,7 +15,7 @@ ext {
     versionsVersion = '0.17.0'
 
     //kotlin
-    kotlinVersion = '1.2.21'
+    kotlinVersion = '1.2.30'
 
     //test
     junitVersion = '4.12'
@@ -26,7 +26,7 @@ ext {
     greencoffeeVersion = '3.0.0'
 
     //support
-    supportLibraryVersion = '27.0.2'
+    supportLibraryVersion = '27.1.0'
 
     //utils
     kotlinPoetVersion = '0.7.0'
