@@ -15,6 +15,7 @@ class FileHelper(private val processingEnv: ProcessingEnvironment) {
 
     fun getAndroidTestPath(): Path {
         val dummyFile = processingEnv.filer.createResource(StandardLocation.CLASS_OUTPUT, "", "tmp")
+        Thread.sleep(500)
         val dummyPath = Paths.get(dummyFile.toUri())
         val appName = processingEnv.options[GreenCoffeeProcessor.OPTIONS_APP_FOLDER] ?: "app"
         val appPath = dummyPath.find { Files.isDirectory(it) && it.endsWith(appName) } ?: run {
