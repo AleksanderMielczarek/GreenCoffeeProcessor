@@ -67,6 +67,10 @@ kapt {
 
 ## Changelog
 
+### 0.3.1 (2018-03-11)
+
+- fix creating of dummy file
+
 ### 0.3.0 (2018-02-17)
 
 - fix dummy file warning
