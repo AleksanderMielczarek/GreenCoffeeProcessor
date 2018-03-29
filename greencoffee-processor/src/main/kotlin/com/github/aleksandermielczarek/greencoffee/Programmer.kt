@@ -1,6 +1,5 @@
 package com.github.aleksandermielczarek.greencoffee
 
-import com.mauriciotogneri.greencoffee.GreenCoffeeConfig
 import com.squareup.kotlinpoet.*
 import java.util.*
 import javax.lang.model.element.TypeElement
@@ -20,7 +19,7 @@ class Programmer(private val typeHelper: TypeHelper) {
         return TypeSpec.classBuilder("GreenCoffee${typeHelper.getName(test)}${index + 1}")
                 .superclass(typeHelper.getTypeName(test))
                 .addSuperclassConstructorParameter(CodeBlock.builder()
-                        .addStatement("%T(\"${greenCoffee.screenshotPath}\")", GreenCoffeeConfig::class)
+                        .addStatement("%T(\"${greenCoffee.screenshotPath}\")", ClassName("com.mauriciotogneri.greencoffee", "GreenCoffeeConfig"))
                         .indent()
                         .addStatement(".withFeatureFromAssets(\"${greenCoffee.featureFromAssets}\")")
                         .addStatement(".scenarios(${greenCoffee.locales.joinToString(", ") { "%T(\"${it.language}\", \"${it.country}\", \"${it.variant}\")" }})", *Collections.nCopies(greenCoffee.locales.size, Locale::class).toTypedArray())

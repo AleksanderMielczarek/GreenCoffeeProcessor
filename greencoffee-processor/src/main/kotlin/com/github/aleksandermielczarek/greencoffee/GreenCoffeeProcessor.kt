@@ -1,7 +1,5 @@
 package com.github.aleksandermielczarek.greencoffee
 
-import com.mauriciotogneri.greencoffee.GreenCoffeeConfig
-import java.nio.file.Files
 import java.nio.file.Path
 import javax.annotation.processing.AbstractProcessor
 import javax.annotation.processing.ProcessingEnvironment
@@ -20,6 +18,7 @@ class GreenCoffeeProcessor : AbstractProcessor() {
         const val OPTIONS_APP_FOLDER = "appFolder"
     }
 
+    private val scenarioCounter = ScenarioCounter()
     private lateinit var typeHelper: TypeHelper
     private lateinit var programmer: Programmer
     private lateinit var writer: Writer
@@ -53,34 +52,10 @@ class GreenCoffeeProcessor : AbstractProcessor() {
                 .map { it as TypeElement }
                 .forEach {
                     val greenCoffee = GreenCoffeeData.fromGreenCoffee(it.getAnnotation(GreenCoffee::class.java))
-                    val scenarios = countScenarios(greenCoffee)
+                    val scenarios = scenarioCounter.count(greenCoffee, androidTestPath)
                     val code = programmer.writeCode(it, greenCoffee, scenarios)
                     writer.writeFile(code)
                 }
         return true
-    }
-
-    private fun countScenarios(greenCoffee: GreenCoffeeData): Int {
-        val feature = Files.newInputStream(androidTestPath.resolve(greenCoffee.featureFromAssets))
-        val scenarios = GreenCoffeeConfig(greenCoffee.screenshotPath)
-                .withFeatureFromInputStream(feature)
-                .scenarios(*greenCoffee.locales.toTypedArray())
-                .filter {
-                    if (greenCoffee.includeScenarios.isNotEmpty()) {
-                        greenCoffee.includeScenarios.contains(it.scenario().name())
-                    } else {
-                        true
-                    }
-                }
-                .filter {
-                    if (greenCoffee.excludeScenarios.isNotEmpty()) {
-                        !greenCoffee.excludeScenarios.contains(it.scenario().name())
-                    } else {
-                        true
-                    }
-                }
-                .count()
-        feature.use { }
-        return scenarios
     }
 }

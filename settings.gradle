@@ -1,1 +1,1 @@
-include ':app', ':greencoffee-processor', ':greencoffee-annotations', ':greencoffee'
+include ':app', ':greencoffee-processor', ':greencoffee-annotations'
