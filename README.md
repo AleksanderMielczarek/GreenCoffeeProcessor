@@ -36,8 +36,9 @@ Instated of using parametrized test, just make your test abstract and annotate w
    
 ```kotlin
 @GreenCoffee(
-        screenshotPath = "testapp",
+        screenshotOnFail = true,
         featureFromAssets = "assets/login.feature",
+        tags = ["tag1", "tag2"],
         locales = [ScenarioLocale("en", "GB"), ScenarioLocale("es", "ES")],
         includeScenarios = ["Invalid username and password", "Set of wrong credentials"],
         excludeScenarios = ["Invalid username"]
@@ -66,6 +67,10 @@ kapt {
 ```
 
 ## Changelog
+
+### 0.4.0 (2018-04-29)
+
+- support green-coffee 3.2.1
 
 ### 0.3.1 (2018-03-11)
 
