@@ -27,8 +27,11 @@ android {
         androidTest.java.srcDirs += 'src/androidTest/kotlin'
     }
     testOptions {
-        unitTests.returnDefaultValues = true
         execution 'ANDROID_TEST_ORCHESTRATOR'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -42,6 +45,7 @@ dependencies {
     //test
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "com.android.support.test:runner:$runnerVersion"
+    androidTestImplementation "com.android.support.test:rules:$runnerVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$espressoCoreVersion"
     androidTestUtil "com.android.support.test:orchestrator:$runnerVersion"
     androidTestImplementation "com.mauriciotogneri:greencoffee:$greencoffeeVersion"

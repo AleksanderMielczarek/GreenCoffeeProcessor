@@ -6,8 +6,9 @@ import java.util.*
  * Created by Aleksander Mielczarek on 17.02.2018.
  */
 data class GreenCoffeeData(
-        val screenshotPath: String,
+        val screenshotOnFail: Boolean,
         val featureFromAssets: String,
+        val tags: List<String>,
         val locales: List<Locale>,
         val includeScenarios: List<String>,
         val excludeScenarios: List<String>
@@ -16,8 +17,9 @@ data class GreenCoffeeData(
 
         fun fromGreenCoffee(greenCoffee: GreenCoffee): GreenCoffeeData {
             return GreenCoffeeData(
-                    greenCoffee.screenshotPath,
+                    greenCoffee.screenshotOnFail,
                     greenCoffee.featureFromAssets,
+                    greenCoffee.tags.toList(),
                     greenCoffee.locales.map { Locale(it.language, it.country, it.variant) },
                     greenCoffee.includeScenarios.toList(),
                     greenCoffee.excludeScenarios.toList()

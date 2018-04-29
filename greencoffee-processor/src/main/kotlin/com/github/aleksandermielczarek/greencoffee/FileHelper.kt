@@ -1,6 +1,5 @@
 package com.github.aleksandermielczarek.greencoffee
 
-import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import javax.annotation.processing.ProcessingEnvironment
@@ -18,7 +17,7 @@ class FileHelper(private val processingEnv: ProcessingEnvironment) {
         Thread.sleep(500)
         val dummyPath = Paths.get(dummyFile.toUri())
         val appName = processingEnv.options[GreenCoffeeProcessor.OPTIONS_APP_FOLDER] ?: "app"
-        val appPath = dummyPath.find { Files.isDirectory(it) && it.endsWith(appName) } ?: run {
+        val appPath = dummyPath.find { it.startsWith(appName) && it.endsWith(appName) } ?: run {
             processingEnv.messager.printMessage(Diagnostic.Kind.ERROR, "Can't find app directory for appFolder: $appName")
             throw IllegalStateException()
         }

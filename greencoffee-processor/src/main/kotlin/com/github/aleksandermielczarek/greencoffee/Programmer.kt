@@ -19,9 +19,14 @@ class Programmer(private val typeHelper: TypeHelper) {
         return TypeSpec.classBuilder("GreenCoffee${typeHelper.getName(test)}${index + 1}")
                 .superclass(typeHelper.getTypeName(test))
                 .addSuperclassConstructorParameter(CodeBlock.builder()
-                        .addStatement("%T(\"${greenCoffee.screenshotPath}\")", ClassName("com.mauriciotogneri.greencoffee", "GreenCoffeeConfig"))
+                        .addStatement("%T(${greenCoffee.screenshotOnFail})", ClassName("com.mauriciotogneri.greencoffee", "GreenCoffeeConfig"))
                         .indent()
                         .addStatement(".withFeatureFromAssets(\"${greenCoffee.featureFromAssets}\")")
+                        .apply {
+                            if (greenCoffee.tags.isNotEmpty()) {
+                                addStatement(".withTags(${createVarargFromArray(greenCoffee.tags)})")
+                            }
+                        }
                         .addStatement(".scenarios(${greenCoffee.locales.joinToString(", ") { "%T(\"${it.language}\", \"${it.country}\", \"${it.variant}\")" }})", *Collections.nCopies(greenCoffee.locales.size, Locale::class).toTypedArray())
                         .apply {
                             if (greenCoffee.includeScenarios.isNotEmpty()) {
@@ -42,6 +47,8 @@ class Programmer(private val typeHelper: TypeHelper) {
     }
 
     private fun <T> createListFromArray(array: List<T>): String {
-        return "listOf(${array.joinToString(", ") { "\"$it\"" }})"
+        return "listOf(${createVarargFromArray(array)})"
     }
+
+    private fun <T> createVarargFromArray(array: List<T>) = array.joinToString(", ") { "\"$it\"" }
 }

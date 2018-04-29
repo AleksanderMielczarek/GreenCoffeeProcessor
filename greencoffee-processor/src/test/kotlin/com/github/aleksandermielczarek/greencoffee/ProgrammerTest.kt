@@ -47,8 +47,9 @@ class ProgrammerTest {
 
             @LargeTest
             @RunWith(AndroidJUnit4::class)
-            class GreenCoffeeTest1 : Test(GreenCoffeeConfig("screenshotPath")
+            class GreenCoffeeTest1 : Test(GreenCoffeeConfig(true)
                 .withFeatureFromAssets("featurePath")
+                .withTags("tag1", "tag2")
                 .scenarios(Locale("en", "GB", ""))
                 .filter { listOf("include").contains(it.scenario().name()) }
                 .filter { !listOf("exclude").contains(it.scenario().name()) }
@@ -59,8 +60,9 @@ class ProgrammerTest {
         val code = programmer.writeCode(
                 test,
                 GreenCoffeeData(
-                        "screenshotPath",
+                        true,
                         "featurePath",
+                        listOf("tag1", "tag2"),
                         listOf(Locale("en", "GB", "")),
                         listOf("include"),
                         listOf("exclude")
@@ -83,7 +85,7 @@ class ProgrammerTest {
 
             @LargeTest
             @RunWith(AndroidJUnit4::class)
-            class GreenCoffeeTest1 : Test(GreenCoffeeConfig("screenshotPath")
+            class GreenCoffeeTest1 : Test(GreenCoffeeConfig(true)
                 .withFeatureFromAssets("")
                 .scenarios()
                 [0]
@@ -93,8 +95,9 @@ class ProgrammerTest {
         val code = programmer.writeCode(
                 test,
                 GreenCoffeeData(
-                        "screenshotPath",
+                        true,
                         "",
+                        emptyList(),
                         emptyList(),
                         emptyList(),
                         emptyList()
@@ -117,7 +120,7 @@ class ProgrammerTest {
 
             @LargeTest
             @RunWith(AndroidJUnit4::class)
-            class GreenCoffeeTest1 : Test(GreenCoffeeConfig("")
+            class GreenCoffeeTest1 : Test(GreenCoffeeConfig(false)
                 .withFeatureFromAssets("featurePath")
                 .scenarios()
                 [0]
@@ -127,8 +130,9 @@ class ProgrammerTest {
         val code = programmer.writeCode(
                 test,
                 GreenCoffeeData(
-                        "",
+                        false,
                         "featurePath",
+                        emptyList(),
                         emptyList(),
                         emptyList(),
                         emptyList()
@@ -152,7 +156,7 @@ class ProgrammerTest {
 
             @LargeTest
             @RunWith(AndroidJUnit4::class)
-            class GreenCoffeeTest1 : Test(GreenCoffeeConfig("")
+            class GreenCoffeeTest1 : Test(GreenCoffeeConfig(false)
                 .withFeatureFromAssets("")
                 .scenarios(Locale("en", "GB", ""), Locale("es", "ES", "2"))
                 [0]
@@ -162,8 +166,9 @@ class ProgrammerTest {
         val code = programmer.writeCode(
                 test,
                 GreenCoffeeData(
+                        false,
                         "",
-                        "",
+                        emptyList(),
                         listOf(Locale("en", "GB", ""), Locale("es", "ES", "2")),
                         emptyList(),
                         emptyList()
@@ -186,7 +191,7 @@ class ProgrammerTest {
 
             @LargeTest
             @RunWith(AndroidJUnit4::class)
-            class GreenCoffeeTest1 : Test(GreenCoffeeConfig("")
+            class GreenCoffeeTest1 : Test(GreenCoffeeConfig(false)
                 .withFeatureFromAssets("")
                 .scenarios()
                 .filter { listOf("include1", "include2").contains(it.scenario().name()) }
@@ -197,8 +202,9 @@ class ProgrammerTest {
         val code = programmer.writeCode(
                 test,
                 GreenCoffeeData(
+                        false,
                         "",
-                        "",
+                        emptyList(),
                         emptyList(),
                         listOf("include1", "include2"),
                         emptyList()
@@ -221,7 +227,7 @@ class ProgrammerTest {
 
             @LargeTest
             @RunWith(AndroidJUnit4::class)
-            class GreenCoffeeTest1 : Test(GreenCoffeeConfig("")
+            class GreenCoffeeTest1 : Test(GreenCoffeeConfig(false)
                 .withFeatureFromAssets("")
                 .scenarios()
                 .filter { !listOf("exclude1", "exclude2").contains(it.scenario().name()) }
@@ -232,8 +238,9 @@ class ProgrammerTest {
         val code = programmer.writeCode(
                 test,
                 GreenCoffeeData(
+                        false,
                         "",
-                        "",
+                        emptyList(),
                         emptyList(),
                         emptyList(),
                         listOf("exclude1", "exclude2")
@@ -256,7 +263,7 @@ class ProgrammerTest {
 
             @LargeTest
             @RunWith(AndroidJUnit4::class)
-            class GreenCoffeeTest1 : Test(GreenCoffeeConfig("")
+            class GreenCoffeeTest1 : Test(GreenCoffeeConfig(false)
                 .withFeatureFromAssets("")
                 .scenarios()
                 [0]
@@ -264,7 +271,7 @@ class ProgrammerTest {
 
             @LargeTest
             @RunWith(AndroidJUnit4::class)
-            class GreenCoffeeTest2 : Test(GreenCoffeeConfig("")
+            class GreenCoffeeTest2 : Test(GreenCoffeeConfig(false)
                 .withFeatureFromAssets("")
                 .scenarios()
                 [1]
@@ -274,8 +281,9 @@ class ProgrammerTest {
         val code = programmer.writeCode(
                 test,
                 GreenCoffeeData(
+                        false,
                         "",
-                        "",
+                        emptyList(),
                         emptyList(),
                         emptyList(),
                         emptyList()
