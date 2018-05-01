@@ -1,6 +1,11 @@
 package com.mauriciotogneri.greencoffee
 
-class Scenario {
+class Scenario(
+        private val scenarioName: String,
+        private val tags: List<String>
+) {
 
-	fun name() = ""
+    fun name(): String {
+        return scenarioName
+    }
 }

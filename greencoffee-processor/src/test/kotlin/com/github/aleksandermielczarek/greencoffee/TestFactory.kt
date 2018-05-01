@@ -1,5 +1,6 @@
 package com.github.aleksandermielczarek.greencoffee
 
+import com.squareup.kotlinpoet.ClassName
 import java.util.*
 
 object TestFactory {
@@ -7,9 +8,16 @@ object TestFactory {
     val testPackage = "com.test"
     val testName = "Test"
 
-    val completeScenarios = listOf("Scenario1", "Scenario2")
-    val minimalScenarios = completeScenarios.subList(0, 1)
-    val singleElementsScenarios = minimalScenarios
+    val completeScenarioNames = listOf("Scenario1", "Scenario2")
+    val minimalScenarioNames = completeScenarioNames.subList(0, 1)
+    val singleElementsScenarioNames = minimalScenarioNames
+
+    val completeScenarioAnnotations = listOf(
+            ClassName("android.support.test.filters", "FlakyTest"),
+            ClassName("android.support.test.filters", "SmallTest")
+    )
+    val minimalScenarioAnnotations = emptyList<ClassName>()
+    val singleElementsScenarioAnnotations = completeScenarioAnnotations.subList(0, 1)
 
     val completeGreenCoffeeData = GreenCoffeeData(
             true,
@@ -39,9 +47,13 @@ object TestFactory {
     val testComplete = """
             package com.test
 
+            import android.support.test.filters.FlakyTest
+            import android.support.test.filters.SmallTest
             import com.mauriciotogneri.greencoffee.GreenCoffeeConfig
             import java.util.Locale
 
+            @FlakyTest
+            @SmallTest
             class Test_Scenario1 : Test(GreenCoffeeConfig(true)
                 .withFeatureFromAssets("assets/login.feature")
                 .withTags("tag1", "tag2")
@@ -51,6 +63,8 @@ object TestFactory {
                 [0]
             )
 
+            @FlakyTest
+            @SmallTest
             class Test_Scenario2 : Test(GreenCoffeeConfig(true)
                 .withFeatureFromAssets("assets/login.feature")
                 .withTags("tag1", "tag2")
@@ -76,9 +90,11 @@ object TestFactory {
     val testWithSingleElements = """
             package com.test
 
+            import android.support.test.filters.FlakyTest
             import com.mauriciotogneri.greencoffee.GreenCoffeeConfig
             import java.util.Locale
 
+            @FlakyTest
             class Test_Scenario1 : Test(GreenCoffeeConfig(true)
                 .withFeatureFromAssets("assets/login.feature")
                 .withTags("tag1")

@@ -2,5 +2,5 @@ package com.mauriciotogneri.greencoffee
 
 class ScenarioConfig {
 
-	fun scenario() = Scenario()
+    fun scenario() = Scenario("", emptyList())
 }

@@ -39,6 +39,7 @@ class Programmer(private val typeHelper: TypeHelper) {
                         .addStatement("[${indexedScenario.index}]")
                         .unindent()
                         .build())
+                .apply { indexedScenario.value.annotations().forEach { addAnnotation(it) } }
                 .build()
     }
 

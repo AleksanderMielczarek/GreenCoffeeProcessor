@@ -25,14 +25,23 @@ class ProgrammerTest {
     @InjectMocks
     lateinit var programmer: Programmer
 
-    val completeScenarios = TestFactory.completeScenarios.map { scenario ->
-        mock<ReflectiveScenarioConfig> { on { camelCaseName() } doReturn scenario }
+    val completeScenarios = TestFactory.completeScenarioNames.map { scenario ->
+        mock<ReflectiveScenarioConfig> {
+            on { camelCaseName() } doReturn scenario
+            on { annotations() } doReturn TestFactory.completeScenarioAnnotations
+        }
     }
-    val minimalScenarios = TestFactory.minimalScenarios.map { scenario ->
-        mock<ReflectiveScenarioConfig> { on { camelCaseName() } doReturn scenario }
+    val minimalScenarios = TestFactory.minimalScenarioNames.map { scenario ->
+        mock<ReflectiveScenarioConfig> {
+            on { camelCaseName() } doReturn scenario
+            on { annotations() } doReturn TestFactory.minimalScenarioAnnotations
+        }
     }
-    val singleElementsScenarios = TestFactory.singleElementsScenarios.map { scenario ->
-        mock<ReflectiveScenarioConfig> { on { camelCaseName() } doReturn scenario }
+    val singleElementsScenarios = TestFactory.singleElementsScenarioNames.map { scenario ->
+        mock<ReflectiveScenarioConfig> {
+            on { camelCaseName() } doReturn scenario
+            on { annotations() } doReturn TestFactory.singleElementsScenarioAnnotations
+        }
     }
 
     @Before
