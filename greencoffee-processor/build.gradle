@@ -20,5 +20,6 @@ dependencies {
     implementation("com.squareup:kotlinpoet:$kotlinPoetVersion") {
         exclude group: "org.jetbrains.kotlin"
     }
+    implementation "com.google.guava:guava:$guavaVersion-jre"
     implementation project(':greencoffee-annotations')
 }

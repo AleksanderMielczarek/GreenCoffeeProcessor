@@ -9,15 +9,15 @@ import javax.lang.model.element.TypeElement
 
 class Programmer(private val typeHelper: TypeHelper) {
 
-    fun writeCode(test: TypeElement, greenCoffee: GreenCoffeeData, scenarios: Int): FileSpec {
-        return FileSpec.builder(typeHelper.getPackage(test), "GreenCoffee${typeHelper.getName(test)}")
-                .apply { IntRange(0, scenarios - 1).map { addType(createSingleTestImpl(test, greenCoffee, it)) } }
+    fun writeCode(abstractTest: TypeElement, greenCoffee: GreenCoffeeData, scenarios: List<ScenarioConfig>): FileSpec {
+        return FileSpec.builder(typeHelper.getPackage(abstractTest), "GreenCoffee${typeHelper.getName(abstractTest)}")
+                .apply { scenarios.withIndex().forEach { addType(createSingleTestImpl(abstractTest, greenCoffee, it)) } }
                 .build()
     }
 
-    private fun createSingleTestImpl(test: TypeElement, greenCoffee: GreenCoffeeData, index: Int): TypeSpec {
-        return TypeSpec.classBuilder("GreenCoffee${typeHelper.getName(test)}${index + 1}")
-                .superclass(typeHelper.getTypeName(test))
+    private fun createSingleTestImpl(abstractTest: TypeElement, greenCoffee: GreenCoffeeData, indexedScenario: IndexedValue<ScenarioConfig>): TypeSpec {
+        return TypeSpec.classBuilder("GreenCoffee${typeHelper.getName(abstractTest)}${indexedScenario.index + 1}")
+                .superclass(typeHelper.getTypeName(abstractTest))
                 .addSuperclassConstructorParameter(CodeBlock.builder()
                         .addStatement("%T(${greenCoffee.screenshotOnFail})", ClassName("com.mauriciotogneri.greencoffee", "GreenCoffeeConfig"))
                         .indent()
@@ -36,7 +36,7 @@ class Programmer(private val typeHelper: TypeHelper) {
                                 addStatement(".filter { !${createListFromArray(greenCoffee.excludeScenarios)}.contains(it.scenario().name()) }")
                             }
                         }
-                        .addStatement("[$index]")
+                        .addStatement("[${indexedScenario.index}]")
                         .unindent()
                         .build())
                 .build()

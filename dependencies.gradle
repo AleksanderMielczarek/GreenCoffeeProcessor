@@ -30,4 +30,5 @@ ext {
 
     //utils
     kotlinPoetVersion = '0.7.0'
+    guavaVersion = '25.0'
 }

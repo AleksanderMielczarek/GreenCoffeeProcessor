@@ -31,21 +31,21 @@ class ProgrammerTest {
     }
 
     @Test
-    fun `should write complete test`() {
+    fun `write complete test`() {
         val code = programmer.writeCode(test, TestFactory.completeGreenCoffeeData, TestFactory.completeScenarios)
 
         assertEquals(TestFactory.testComplete, code.toString().trimIndent())
     }
 
     @Test
-    fun `should write minimal test`() {
+    fun `write minimal test`() {
         val code = programmer.writeCode(test, TestFactory.minimalGreenCoffeeData, TestFactory.minimalScenarios)
 
         assertEquals(TestFactory.testMinimal, code.toString().trimIndent())
     }
 
     @Test
-    fun `should write single elements test`() {
+    fun `write single elements test`() {
         val code = programmer.writeCode(test, TestFactory.singleElementsGreenCoffeeData, TestFactory.singleElementsScenarios)
 
         assertEquals(TestFactory.testWithSingleElements, code.toString().trimIndent())
