@@ -7,9 +7,6 @@ import com.mauriciotogneri.greencoffee.ScenarioConfig
 import org.junit.Rule
 import org.junit.Test
 
-/**
- * Created by Aleksander Mielczarek on 16.02.2018.
- */
 @GreenCoffee(featureFromAssets = "assets/login.feature")
 abstract class LoginTest(scenario: ScenarioConfig) : GreenCoffeeTest(scenario) {
 

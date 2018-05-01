@@ -11,9 +11,6 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import javax.lang.model.element.TypeElement
 
-/**
- * Created by Aleksander Mielczarek on 17.02.2018.
- */
 @RunWith(MockitoJUnitRunner.StrictStubs::class)
 class ProgrammerTest {
 
@@ -39,7 +36,6 @@ class ProgrammerTest {
 
         assertEquals(TestFactory.testComplete, code.toString().trimIndent())
     }
-
 
     @Test
     fun `should write minimal test`() {

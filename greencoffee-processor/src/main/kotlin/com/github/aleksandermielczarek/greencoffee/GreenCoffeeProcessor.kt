@@ -8,10 +8,6 @@ import javax.lang.model.SourceVersion
 import javax.lang.model.element.ElementKind
 import javax.lang.model.element.TypeElement
 
-
-/**
- * Created by Aleksander Mielczarek on 13.02.2018.
- */
 class GreenCoffeeProcessor : AbstractProcessor() {
 
     companion object {

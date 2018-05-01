@@ -5,9 +5,6 @@ import java.io.File
 import javax.annotation.processing.ProcessingEnvironment
 import javax.tools.Diagnostic
 
-/**
- * Created by Aleksander Mielczarek on 17.02.2018.
- */
 class Writer(private val processingEnv: ProcessingEnvironment) {
 
     fun writeFile(code: FileSpec) {

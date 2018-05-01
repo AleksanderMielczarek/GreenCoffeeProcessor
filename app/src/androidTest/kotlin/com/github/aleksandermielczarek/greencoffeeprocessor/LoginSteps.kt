@@ -5,9 +5,6 @@ import com.mauriciotogneri.greencoffee.annotations.Given
 import com.mauriciotogneri.greencoffee.annotations.Then
 import com.mauriciotogneri.greencoffee.annotations.When
 
-/**
- * Created by Aleksander Mielczarek on 16.02.2018.
- */
 class LoginSteps : GreenCoffeeSteps() {
 
     @Given("^I see an empty login form$")

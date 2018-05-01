@@ -15,9 +15,6 @@ import javax.annotation.processing.Filer
 import javax.annotation.processing.ProcessingEnvironment
 import javax.tools.FileObject
 
-/**
- * Created by Aleksander Mielczarek on 17.02.2018.
- */
 @RunWith(MockitoJUnitRunner.StrictStubs::class)
 class FileHelperTest {
 

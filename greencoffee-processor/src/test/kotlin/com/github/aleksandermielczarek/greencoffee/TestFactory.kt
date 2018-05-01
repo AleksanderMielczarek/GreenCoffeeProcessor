@@ -42,7 +42,7 @@ object TestFactory {
             import com.mauriciotogneri.greencoffee.GreenCoffeeConfig
             import java.util.Locale
 
-            class GreenCoffeeTest1 : Test(GreenCoffeeConfig(true)
+            class Test_Feature1 : Test(GreenCoffeeConfig(true)
                 .withFeatureFromAssets("assets/login.feature")
                 .withTags("tag1", "tag2")
                 .scenarios(Locale("pl", "PL", ""), Locale("en", "GB", ""))
@@ -51,7 +51,7 @@ object TestFactory {
                 [0]
             )
 
-            class GreenCoffeeTest2 : Test(GreenCoffeeConfig(true)
+            class Test_Feature2 : Test(GreenCoffeeConfig(true)
                 .withFeatureFromAssets("assets/login.feature")
                 .withTags("tag1", "tag2")
                 .scenarios(Locale("pl", "PL", ""), Locale("en", "GB", ""))
@@ -66,7 +66,7 @@ object TestFactory {
 
             import com.mauriciotogneri.greencoffee.GreenCoffeeConfig
 
-            class GreenCoffeeTest1 : Test(GreenCoffeeConfig(false)
+            class Test_Feature1 : Test(GreenCoffeeConfig(false)
                 .withFeatureFromAssets("assets/login.feature")
                 .scenarios()
                 [0]
@@ -79,7 +79,7 @@ object TestFactory {
             import com.mauriciotogneri.greencoffee.GreenCoffeeConfig
             import java.util.Locale
 
-            class GreenCoffeeTest1 : Test(GreenCoffeeConfig(true)
+            class Test_Feature1 : Test(GreenCoffeeConfig(true)
                 .withFeatureFromAssets("assets/login.feature")
                 .withTags("tag1")
                 .scenarios(Locale("pl", "PL", ""))

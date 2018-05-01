@@ -6,10 +6,6 @@ import javax.annotation.processing.ProcessingEnvironment
 import javax.tools.Diagnostic
 import javax.tools.StandardLocation
 
-
-/**
- * Created by Aleksander Mielczarek on 17.02.2018.
- */
 class FileHelper(private val processingEnv: ProcessingEnvironment) {
 
     fun getAndroidTestPath(): Path {

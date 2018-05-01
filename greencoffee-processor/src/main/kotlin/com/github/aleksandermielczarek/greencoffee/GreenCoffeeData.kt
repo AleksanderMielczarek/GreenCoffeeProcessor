@@ -2,9 +2,6 @@ package com.github.aleksandermielczarek.greencoffee
 
 import java.util.*
 
-/**
- * Created by Aleksander Mielczarek on 17.02.2018.
- */
 data class GreenCoffeeData(
         val screenshotOnFail: Boolean,
         val featureFromAssets: String,

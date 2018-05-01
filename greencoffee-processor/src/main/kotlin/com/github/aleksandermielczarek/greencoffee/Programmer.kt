@@ -7,9 +7,6 @@ import com.squareup.kotlinpoet.TypeSpec
 import java.util.*
 import javax.lang.model.element.TypeElement
 
-/**
- * Created by Aleksander Mielczarek on 17.02.2018.
- */
 class Programmer(private val typeHelper: TypeHelper) {
 
     fun writeCode(test: TypeElement, greenCoffee: GreenCoffeeData, scenarios: Int): FileSpec {
