@@ -9,7 +9,6 @@ import org.junit.runner.RunWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-import java.util.*
 import javax.lang.model.element.TypeElement
 
 /**
@@ -29,268 +28,30 @@ class ProgrammerTest {
 
     @Before
     fun setUp() {
-        given(typeHelper.getPackage(test)).willReturn("com.test")
-        given(typeHelper.getName(test)).willReturn("Test")
-        given(typeHelper.getTypeName(test)).willReturn(ClassName("com.test", "Test"))
+        given(typeHelper.getPackage(test)).willReturn(TestFactory.testPackage)
+        given(typeHelper.getName(test)).willReturn(TestFactory.testName)
+        given(typeHelper.getTypeName(test)).willReturn(ClassName(TestFactory.testPackage, TestFactory.testName))
     }
 
     @Test
-    internal fun `should write all`() {
-        val expected = """
-            package com.test
+    fun `should write complete test`() {
+        val code = programmer.writeCode(test, TestFactory.completeGreenCoffeeData, TestFactory.completeScenarios)
 
-            import android.support.test.filters.LargeTest
-            import android.support.test.runner.AndroidJUnit4
-            import com.mauriciotogneri.greencoffee.GreenCoffeeConfig
-            import java.util.Locale
-            import org.junit.runner.RunWith
+        assertEquals(TestFactory.testComplete, code.toString().trimIndent())
+    }
 
-            @LargeTest
-            @RunWith(AndroidJUnit4::class)
-            class GreenCoffeeTest1 : Test(GreenCoffeeConfig(true)
-                .withFeatureFromAssets("featurePath")
-                .withTags("tag1", "tag2")
-                .scenarios(Locale("en", "GB", ""))
-                .filter { listOf("include").contains(it.scenario().name()) }
-                .filter { !listOf("exclude").contains(it.scenario().name()) }
-                [0]
-            )
-        """
 
-        val code = programmer.writeCode(
-                test,
-                GreenCoffeeData(
-                        true,
-                        "featurePath",
-                        listOf("tag1", "tag2"),
-                        listOf(Locale("en", "GB", "")),
-                        listOf("include"),
-                        listOf("exclude")
-                ),
-                1
-        )
+    @Test
+    fun `should write minimal test`() {
+        val code = programmer.writeCode(test, TestFactory.minimalGreenCoffeeData, TestFactory.minimalScenarios)
 
-        assertEquals(expected.trimIndent(), code.toString().trimIndent())
+        assertEquals(TestFactory.testMinimal, code.toString().trimIndent())
     }
 
     @Test
-    internal fun `should write screenshot`() {
-        val expected = """
-            package com.test
+    fun `should write single elements test`() {
+        val code = programmer.writeCode(test, TestFactory.singleElementsGreenCoffeeData, TestFactory.singleElementsScenarios)
 
-            import android.support.test.filters.LargeTest
-            import android.support.test.runner.AndroidJUnit4
-            import com.mauriciotogneri.greencoffee.GreenCoffeeConfig
-            import org.junit.runner.RunWith
-
-            @LargeTest
-            @RunWith(AndroidJUnit4::class)
-            class GreenCoffeeTest1 : Test(GreenCoffeeConfig(true)
-                .withFeatureFromAssets("")
-                .scenarios()
-                [0]
-            )
-        """
-
-        val code = programmer.writeCode(
-                test,
-                GreenCoffeeData(
-                        true,
-                        "",
-                        emptyList(),
-                        emptyList(),
-                        emptyList(),
-                        emptyList()
-                ),
-                1
-        )
-
-        assertEquals(expected.trimIndent(), code.toString().trimIndent())
-    }
-
-    @Test
-    internal fun `should write feature`() {
-        val expected = """
-            package com.test
-
-            import android.support.test.filters.LargeTest
-            import android.support.test.runner.AndroidJUnit4
-            import com.mauriciotogneri.greencoffee.GreenCoffeeConfig
-            import org.junit.runner.RunWith
-
-            @LargeTest
-            @RunWith(AndroidJUnit4::class)
-            class GreenCoffeeTest1 : Test(GreenCoffeeConfig(false)
-                .withFeatureFromAssets("featurePath")
-                .scenarios()
-                [0]
-            )
-        """
-
-        val code = programmer.writeCode(
-                test,
-                GreenCoffeeData(
-                        false,
-                        "featurePath",
-                        emptyList(),
-                        emptyList(),
-                        emptyList(),
-                        emptyList()
-                ),
-                1
-        )
-
-        assertEquals(expected.trimIndent(), code.toString().trimIndent())
-    }
-
-    @Test
-    internal fun `should write locale`() {
-        val expected = """
-            package com.test
-
-            import android.support.test.filters.LargeTest
-            import android.support.test.runner.AndroidJUnit4
-            import com.mauriciotogneri.greencoffee.GreenCoffeeConfig
-            import java.util.Locale
-            import org.junit.runner.RunWith
-
-            @LargeTest
-            @RunWith(AndroidJUnit4::class)
-            class GreenCoffeeTest1 : Test(GreenCoffeeConfig(false)
-                .withFeatureFromAssets("")
-                .scenarios(Locale("en", "GB", ""), Locale("es", "ES", "2"))
-                [0]
-            )
-        """
-
-        val code = programmer.writeCode(
-                test,
-                GreenCoffeeData(
-                        false,
-                        "",
-                        emptyList(),
-                        listOf(Locale("en", "GB", ""), Locale("es", "ES", "2")),
-                        emptyList(),
-                        emptyList()
-                ),
-                1
-        )
-
-        assertEquals(expected.trimIndent(), code.toString().trimIndent())
-    }
-
-    @Test
-    internal fun `should write include`() {
-        val expected = """
-            package com.test
-
-            import android.support.test.filters.LargeTest
-            import android.support.test.runner.AndroidJUnit4
-            import com.mauriciotogneri.greencoffee.GreenCoffeeConfig
-            import org.junit.runner.RunWith
-
-            @LargeTest
-            @RunWith(AndroidJUnit4::class)
-            class GreenCoffeeTest1 : Test(GreenCoffeeConfig(false)
-                .withFeatureFromAssets("")
-                .scenarios()
-                .filter { listOf("include1", "include2").contains(it.scenario().name()) }
-                [0]
-            )
-        """
-
-        val code = programmer.writeCode(
-                test,
-                GreenCoffeeData(
-                        false,
-                        "",
-                        emptyList(),
-                        emptyList(),
-                        listOf("include1", "include2"),
-                        emptyList()
-                ),
-                1
-        )
-
-        assertEquals(expected.trimIndent(), code.toString().trimIndent())
-    }
-
-    @Test
-    internal fun `should write exclude`() {
-        val expected = """
-            package com.test
-
-            import android.support.test.filters.LargeTest
-            import android.support.test.runner.AndroidJUnit4
-            import com.mauriciotogneri.greencoffee.GreenCoffeeConfig
-            import org.junit.runner.RunWith
-
-            @LargeTest
-            @RunWith(AndroidJUnit4::class)
-            class GreenCoffeeTest1 : Test(GreenCoffeeConfig(false)
-                .withFeatureFromAssets("")
-                .scenarios()
-                .filter { !listOf("exclude1", "exclude2").contains(it.scenario().name()) }
-                [0]
-            )
-        """
-
-        val code = programmer.writeCode(
-                test,
-                GreenCoffeeData(
-                        false,
-                        "",
-                        emptyList(),
-                        emptyList(),
-                        emptyList(),
-                        listOf("exclude1", "exclude2")
-                ),
-                1
-        )
-
-        assertEquals(expected.trimIndent(), code.toString().trimIndent())
-    }
-
-    @Test
-    internal fun `should write count`() {
-        val expected = """
-            package com.test
-
-            import android.support.test.filters.LargeTest
-            import android.support.test.runner.AndroidJUnit4
-            import com.mauriciotogneri.greencoffee.GreenCoffeeConfig
-            import org.junit.runner.RunWith
-
-            @LargeTest
-            @RunWith(AndroidJUnit4::class)
-            class GreenCoffeeTest1 : Test(GreenCoffeeConfig(false)
-                .withFeatureFromAssets("")
-                .scenarios()
-                [0]
-            )
-
-            @LargeTest
-            @RunWith(AndroidJUnit4::class)
-            class GreenCoffeeTest2 : Test(GreenCoffeeConfig(false)
-                .withFeatureFromAssets("")
-                .scenarios()
-                [1]
-            )
-        """
-
-        val code = programmer.writeCode(
-                test,
-                GreenCoffeeData(
-                        false,
-                        "",
-                        emptyList(),
-                        emptyList(),
-                        emptyList(),
-                        emptyList()
-                ),
-                2
-        )
-
-        assertEquals(expected.trimIndent(), code.toString().trimIndent())
+        assertEquals(TestFactory.testWithSingleElements, code.toString().trimIndent())
     }
 }

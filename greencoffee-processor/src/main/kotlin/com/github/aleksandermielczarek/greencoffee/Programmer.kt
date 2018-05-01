@@ -1,6 +1,9 @@
 package com.github.aleksandermielczarek.greencoffee
 
-import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.CodeBlock
+import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.TypeSpec
 import java.util.*
 import javax.lang.model.element.TypeElement
 
@@ -38,10 +41,6 @@ class Programmer(private val typeHelper: TypeHelper) {
                         }
                         .addStatement("[$index]")
                         .unindent()
-                        .build())
-                .addAnnotation(ClassName("android.support.test.filters", "LargeTest"))
-                .addAnnotation(AnnotationSpec.builder(ClassName("org.junit.runner", "RunWith"))
-                        .addMember(CodeBlock.of("%T::class", ClassName("android.support.test.runner", "AndroidJUnit4")))
                         .build())
                 .build()
     }
