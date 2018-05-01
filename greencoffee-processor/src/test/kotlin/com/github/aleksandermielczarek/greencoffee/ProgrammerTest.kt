@@ -1,6 +1,8 @@
 package com.github.aleksandermielczarek.greencoffee
 
+import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.given
+import com.nhaarman.mockito_kotlin.mock
 import com.squareup.kotlinpoet.ClassName
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -23,6 +25,16 @@ class ProgrammerTest {
     @InjectMocks
     lateinit var programmer: Programmer
 
+    val completeScenarios = TestFactory.completeScenarios.map { scenario ->
+        mock<ReflectiveScenarioConfig> { on { camelCaseName() } doReturn scenario }
+    }
+    val minimalScenarios = TestFactory.minimalScenarios.map { scenario ->
+        mock<ReflectiveScenarioConfig> { on { camelCaseName() } doReturn scenario }
+    }
+    val singleElementsScenarios = TestFactory.singleElementsScenarios.map { scenario ->
+        mock<ReflectiveScenarioConfig> { on { camelCaseName() } doReturn scenario }
+    }
+
     @Before
     fun setUp() {
         given(typeHelper.getPackage(test)).willReturn(TestFactory.testPackage)
@@ -32,21 +44,21 @@ class ProgrammerTest {
 
     @Test
     fun `write complete test`() {
-        val code = programmer.writeCode(test, TestFactory.completeGreenCoffeeData, TestFactory.completeScenarios)
+        val code = programmer.writeCode(test, TestFactory.completeGreenCoffeeData, completeScenarios)
 
         assertEquals(TestFactory.testComplete, code.toString().trimIndent())
     }
 
     @Test
     fun `write minimal test`() {
-        val code = programmer.writeCode(test, TestFactory.minimalGreenCoffeeData, TestFactory.minimalScenarios)
+        val code = programmer.writeCode(test, TestFactory.minimalGreenCoffeeData, minimalScenarios)
 
         assertEquals(TestFactory.testMinimal, code.toString().trimIndent())
     }
 
     @Test
     fun `write single elements test`() {
-        val code = programmer.writeCode(test, TestFactory.singleElementsGreenCoffeeData, TestFactory.singleElementsScenarios)
+        val code = programmer.writeCode(test, TestFactory.singleElementsGreenCoffeeData, singleElementsScenarios)
 
         assertEquals(TestFactory.testWithSingleElements, code.toString().trimIndent())
     }

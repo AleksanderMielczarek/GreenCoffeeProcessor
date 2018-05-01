@@ -6,15 +6,15 @@ import java.nio.file.Path
 
 class Scenarios {
 
-    fun getScenarios(greenCoffee: GreenCoffeeData, androidTestPath: Path): List<ScenarioConfig> {
+    fun getScenarios(greenCoffee: GreenCoffeeData, androidTestPath: Path): List<ReflectiveScenarioConfig> {
         val feature = Files.newInputStream(androidTestPath.resolve(greenCoffee.featureFromAssets))
         val scenarios = getScenarios(greenCoffee, feature)
         feature.use { }
         return scenarios
     }
 
-    private fun getScenarios(greenCoffee: GreenCoffeeData, feature: InputStream): List<ScenarioConfig> {
-        return GreenCoffeeConfig(greenCoffee.screenshotOnFail)
+    private fun getScenarios(greenCoffee: GreenCoffeeData, feature: InputStream): List<ReflectiveScenarioConfig> {
+        return ReflectiveGreenCoffeeConfig(greenCoffee.screenshotOnFail)
                 .withFeatureFromInputStream(feature)
                 .withTags(greenCoffee.tags)
                 .scenarios(greenCoffee.locales)

@@ -3,7 +3,7 @@ package com.github.aleksandermielczarek.greencoffee
 import java.io.InputStream
 import java.util.*
 
-class GreenCoffeeConfig(screenshotOnFail: Boolean) {
+class ReflectiveGreenCoffeeConfig {
 
     private val greenCoffeeConfigClass = Class.forName("com.mauriciotogneri.greencoffee.GreenCoffeeConfig")
     private val greenCoffeeConfigConstructor = greenCoffeeConfigClass.getDeclaredConstructor(Boolean::class.javaObjectType)
@@ -13,25 +13,28 @@ class GreenCoffeeConfig(screenshotOnFail: Boolean) {
 
     private val greenCoffeeConfig: Any
 
-    init {
+    constructor(screenshotOnFail: Boolean) {
         greenCoffeeConfig = greenCoffeeConfigConstructor.newInstance(screenshotOnFail)
     }
 
-    fun withFeatureFromInputStream(inputStream: InputStream): GreenCoffeeConfig {
-        withFeatureFromInputStreamMethod(greenCoffeeConfig, inputStream)
-        return this
+    constructor(greenCoffeeConfig: Any) {
+        this.greenCoffeeConfig = greenCoffeeConfig
     }
 
-    fun withTags(tags: List<String>): GreenCoffeeConfig {
-        when {
-            tags.size == 1 -> withTagsMethod(greenCoffeeConfig, tags.first())
-            tags.size > 1 -> withTagsMethod(greenCoffeeConfig, tags.first(), tags.subList(1, tags.size).toTypedArray())
+    fun withFeatureFromInputStream(inputStream: InputStream): ReflectiveGreenCoffeeConfig {
+        return ReflectiveGreenCoffeeConfig(withFeatureFromInputStreamMethod(greenCoffeeConfig, inputStream))
+    }
+
+    fun withTags(tags: List<String>): ReflectiveGreenCoffeeConfig {
+        return when {
+            tags.size == 1 -> ReflectiveGreenCoffeeConfig(withTagsMethod(greenCoffeeConfig, tags.first()))
+            tags.size > 1 -> ReflectiveGreenCoffeeConfig(withTagsMethod(greenCoffeeConfig, tags.first(), tags.subList(1, tags.size).toTypedArray()))
+            else -> this
         }
-        return this
     }
 
-    fun scenarios(locales: List<Locale>): List<ScenarioConfig> {
+    fun scenarios(locales: List<Locale>): List<ReflectiveScenarioConfig> {
         val scenarios = scenariosMethod(greenCoffeeConfig, locales.toTypedArray()) as List<*>
-        return scenarios.map { ScenarioConfig(it!!) }
+        return scenarios.map { ReflectiveScenarioConfig(it!!) }
     }
 }

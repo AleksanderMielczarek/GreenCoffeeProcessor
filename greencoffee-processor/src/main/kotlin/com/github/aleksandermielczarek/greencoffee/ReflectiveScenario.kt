@@ -1,6 +1,6 @@
 package com.github.aleksandermielczarek.greencoffee
 
-class Scenario(private val scenario: Any) {
+class ReflectiveScenario(private val scenario: Any) {
 
     private val scenarioClass = Class.forName("com.mauriciotogneri.greencoffee.Scenario")
     private val nameMethod = scenarioClass.getDeclaredMethod("name")

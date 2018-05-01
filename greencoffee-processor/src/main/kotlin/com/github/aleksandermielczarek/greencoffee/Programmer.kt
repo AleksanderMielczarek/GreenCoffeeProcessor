@@ -9,14 +9,14 @@ import javax.lang.model.element.TypeElement
 
 class Programmer(private val typeHelper: TypeHelper) {
 
-    fun writeCode(abstractTest: TypeElement, greenCoffee: GreenCoffeeData, scenarios: List<ScenarioConfig>): FileSpec {
+    fun writeCode(abstractTest: TypeElement, greenCoffee: GreenCoffeeData, scenarios: List<ReflectiveScenarioConfig>): FileSpec {
         return FileSpec.builder(typeHelper.getPackage(abstractTest), "GreenCoffee${typeHelper.getName(abstractTest)}")
                 .apply { scenarios.withIndex().forEach { addType(createSingleTestImpl(abstractTest, greenCoffee, it)) } }
                 .build()
     }
 
-    private fun createSingleTestImpl(abstractTest: TypeElement, greenCoffee: GreenCoffeeData, indexedScenario: IndexedValue<ScenarioConfig>): TypeSpec {
-        return TypeSpec.classBuilder("GreenCoffee${typeHelper.getName(abstractTest)}${indexedScenario.index + 1}")
+    private fun createSingleTestImpl(abstractTest: TypeElement, greenCoffee: GreenCoffeeData, indexedScenario: IndexedValue<ReflectiveScenarioConfig>): TypeSpec {
+        return TypeSpec.classBuilder("${typeHelper.getName(abstractTest)}_${indexedScenario.value.camelCaseName()}")
                 .superclass(typeHelper.getTypeName(abstractTest))
                 .addSuperclassConstructorParameter(CodeBlock.builder()
                         .addStatement("%T(${greenCoffee.screenshotOnFail})", ClassName("com.mauriciotogneri.greencoffee", "GreenCoffeeConfig"))

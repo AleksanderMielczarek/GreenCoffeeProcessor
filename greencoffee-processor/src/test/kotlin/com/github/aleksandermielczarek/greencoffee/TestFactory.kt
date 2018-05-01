@@ -1,6 +1,5 @@
 package com.github.aleksandermielczarek.greencoffee
 
-import com.nhaarman.mockito_kotlin.mock
 import java.util.*
 
 object TestFactory {
@@ -8,9 +7,9 @@ object TestFactory {
     val testPackage = "com.test"
     val testName = "Test"
 
-    val completeScenarios = listOf<ScenarioConfig>(mock(), mock())
-    val minimalScenarios = listOf<ScenarioConfig>(mock())
-    val singleElementsScenarios = listOf<ScenarioConfig>(mock())
+    val completeScenarios = listOf("Scenario1", "Scenario2")
+    val minimalScenarios = completeScenarios.subList(0, 1)
+    val singleElementsScenarios = minimalScenarios
 
     val completeGreenCoffeeData = GreenCoffeeData(
             true,
@@ -43,7 +42,7 @@ object TestFactory {
             import com.mauriciotogneri.greencoffee.GreenCoffeeConfig
             import java.util.Locale
 
-            class GreenCoffeeTest1 : Test(GreenCoffeeConfig(true)
+            class Test_Scenario1 : Test(GreenCoffeeConfig(true)
                 .withFeatureFromAssets("assets/login.feature")
                 .withTags("tag1", "tag2")
                 .scenarios(Locale("pl", "PL", ""), Locale("en", "GB", ""))
@@ -52,7 +51,7 @@ object TestFactory {
                 [0]
             )
 
-            class GreenCoffeeTest2 : Test(GreenCoffeeConfig(true)
+            class Test_Scenario2 : Test(GreenCoffeeConfig(true)
                 .withFeatureFromAssets("assets/login.feature")
                 .withTags("tag1", "tag2")
                 .scenarios(Locale("pl", "PL", ""), Locale("en", "GB", ""))
@@ -67,7 +66,7 @@ object TestFactory {
 
             import com.mauriciotogneri.greencoffee.GreenCoffeeConfig
 
-            class GreenCoffeeTest1 : Test(GreenCoffeeConfig(false)
+            class Test_Scenario1 : Test(GreenCoffeeConfig(false)
                 .withFeatureFromAssets("assets/login.feature")
                 .scenarios()
                 [0]
@@ -80,7 +79,7 @@ object TestFactory {
             import com.mauriciotogneri.greencoffee.GreenCoffeeConfig
             import java.util.Locale
 
-            class GreenCoffeeTest1 : Test(GreenCoffeeConfig(true)
+            class Test_Scenario1 : Test(GreenCoffeeConfig(true)
                 .withFeatureFromAssets("assets/login.feature")
                 .withTags("tag1")
                 .scenarios(Locale("pl", "PL", ""))
