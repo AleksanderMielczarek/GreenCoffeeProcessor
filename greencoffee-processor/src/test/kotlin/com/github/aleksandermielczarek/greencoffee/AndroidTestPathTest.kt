@@ -27,7 +27,7 @@ class AndroidTestPathTest {
         on { messager } doReturn messager
     }
     val arguments: Arguments = mock {
-        on { appFolder } doReturn "app"
+        on { appFolder() } doReturn "app"
     }
     val errors: Errors = spy(Errors(processingEnv))
 

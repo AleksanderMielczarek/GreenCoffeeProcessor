@@ -7,7 +7,7 @@ import com.squareup.kotlinpoet.TypeSpec
 import java.util.*
 import javax.lang.model.element.TypeElement
 
-class Programmer(private val typeHelper: TypeHelper) {
+class Programmer(private val typeHelper: TypeHelper, private val arguments: Arguments) {
 
     fun writeCode(abstractTest: TypeElement, greenCoffee: GreenCoffeeData, scenarios: List<ReflectiveScenarioConfig>): FileSpec {
         return FileSpec.builder(typeHelper.getPackage(abstractTest), "GreenCoffee${typeHelper.getName(abstractTest)}")
@@ -39,7 +39,7 @@ class Programmer(private val typeHelper: TypeHelper) {
                         .addStatement("[${indexedScenario.index}]")
                         .unindent()
                         .build())
-                .apply { indexedScenario.value.annotations().forEach { addAnnotation(it) } }
+                .apply { indexedScenario.value.annotations(arguments.supportedAnnotations()).forEach { addAnnotation(it) } }
                 .build()
     }
 

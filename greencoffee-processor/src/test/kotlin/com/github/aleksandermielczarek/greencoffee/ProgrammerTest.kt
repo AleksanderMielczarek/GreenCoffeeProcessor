@@ -1,5 +1,6 @@
 package com.github.aleksandermielczarek.greencoffee
 
+import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.given
 import com.nhaarman.mockito_kotlin.mock
@@ -20,6 +21,9 @@ class ProgrammerTest {
     lateinit var typeHelper: TypeHelper
 
     @Mock
+    lateinit var arguments: Arguments
+
+    @Mock
     lateinit var test: TypeElement
 
     @InjectMocks
@@ -28,19 +32,19 @@ class ProgrammerTest {
     val completeScenarios = TestFactory.completeScenarioNames.map { scenario ->
         mock<ReflectiveScenarioConfig> {
             on { camelCaseName() } doReturn scenario
-            on { annotations() } doReturn TestFactory.completeScenarioAnnotations
+            on { annotations(any()) } doReturn TestFactory.completeScenarioAnnotations
         }
     }
     val minimalScenarios = TestFactory.minimalScenarioNames.map { scenario ->
         mock<ReflectiveScenarioConfig> {
             on { camelCaseName() } doReturn scenario
-            on { annotations() } doReturn TestFactory.minimalScenarioAnnotations
+            on { annotations(any()) } doReturn TestFactory.minimalScenarioAnnotations
         }
     }
     val singleElementsScenarios = TestFactory.singleElementsScenarioNames.map { scenario ->
         mock<ReflectiveScenarioConfig> {
             on { camelCaseName() } doReturn scenario
-            on { annotations() } doReturn TestFactory.singleElementsScenarioAnnotations
+            on { annotations(any()) } doReturn TestFactory.singleElementsScenarioAnnotations
         }
     }
 

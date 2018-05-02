@@ -27,7 +27,7 @@ class AndroidTestPath(
         waitUntilFileIsCreated(dummyFile)
 
         val dummyPath = Paths.get(dummyFile.toUri())
-        val appPath = dummyPath.find { it.startsWith(arguments.appFolder) && it.endsWith(arguments.appFolder) }
+        val appPath = dummyPath.find { it.startsWith(arguments.appFolder()) && it.endsWith(arguments.appFolder()) }
                 ?: run { appNotFound(dummyFile) }
         val appIndex = dummyPath.indexOf(appPath)
 
@@ -54,6 +54,6 @@ class AndroidTestPath(
 
     private fun appNotFound(dummyFile: FileObject) {
         dummyFile.delete()
-        errors.appDirectoryNotFound(arguments.appFolder)
+        errors.appDirectoryNotFound(arguments.appFolder())
     }
 }

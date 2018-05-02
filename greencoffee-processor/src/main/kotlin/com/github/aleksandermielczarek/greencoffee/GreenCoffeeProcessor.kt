@@ -26,7 +26,7 @@ class GreenCoffeeProcessor : AbstractProcessor() {
     }
 
     override fun getSupportedOptions(): MutableSet<String> {
-        return mutableSetOf(Arguments.OPTIONS_APP_FOLDER)
+        return mutableSetOf(Arguments.OPTIONS_APP_FOLDER, Arguments.OPTIONS_SUPPORTED_ANNOTATIONS)
     }
 
     override fun init(processingEnv: ProcessingEnvironment) {
@@ -36,7 +36,7 @@ class GreenCoffeeProcessor : AbstractProcessor() {
         val typeHelper = TypeHelper(processingEnv)
 
         errors = Errors(processingEnv)
-        programmer = Programmer(typeHelper)
+        programmer = Programmer(typeHelper, arguments)
         writer = Writer(processingEnv, errors)
 
         val androidTestPathHelper = AndroidTestPath(processingEnv, arguments, errors)

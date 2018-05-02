@@ -5,7 +5,7 @@ import com.squareup.kotlinpoet.ClassName
 
 class ReflectiveScenarioConfig(private val scenarioConfig: Any) {
 
-    private val supportedAnnotations = mapOf(
+    private val embeddedSupportedAnnotations = mapOf(
             "@Ignore" to ClassName("org.junit", "Ignore"),
             "@FlakyTest" to ClassName("android.support.test.filters", "FlakyTest"),
             "@SmallTest" to ClassName("android.support.test.filters", "SmallTest"),
@@ -28,12 +28,25 @@ class ReflectiveScenarioConfig(private val scenarioConfig: Any) {
                 .let { CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, it) }
     }
 
-    fun annotations(): List<ClassName> {
-        return scenario().tags().mapNotNull { convertTagToAnnotation(it) }
+    fun annotations(supportedAnnotations: List<String>): List<ClassName> {
+        val annotations = mutableMapOf<String, ClassName>()
+        annotations.putAll(embeddedSupportedAnnotations)
+        val additionalSupportedAnnotations = convertAnnotationsToMap(supportedAnnotations)
+        annotations.putAll(additionalSupportedAnnotations)
+        return scenario().tags().mapNotNull { convertTagToAnnotation(annotations, it) }
     }
 
-    private fun convertTagToAnnotation(tag: String): ClassName? {
-        val supportedAnnotation = supportedAnnotations[tag]
+    private fun convertAnnotationsToMap(annotations: List<String>): Map<String, ClassName> {
+        return annotations.mapNotNull {
+            val annotationPackage = getPackage(it) ?: return@mapNotNull null
+            val annotationName = getName(it)
+            return@mapNotNull ClassName(annotationPackage, annotationName)
+        }.map { "@${it.simpleName()}" to it }
+                .toMap()
+    }
+
+    private fun convertTagToAnnotation(annotations: Map<String, ClassName>, tag: String): ClassName? {
+        val supportedAnnotation = annotations[tag]
         if (supportedAnnotation != null) {
             return supportedAnnotation
         }
