@@ -30,7 +30,7 @@ dependencies {
 }
 ```
 
-## Example
+## Test
 
 Instated of using parametrized test, just make your test abstract and annotate with `@GreenCoffee`. GreenCoffeeProcessor will generate rest for you.
    
@@ -56,6 +56,8 @@ abstract class LoginTest(scenario: ScenarioConfig) : GreenCoffeeTest(scenario) {
 }
 ```
 
+## Custom app folder name
+
 If app folder is different than default app than specify it:
 
 ```groovy
@@ -66,7 +68,32 @@ kapt {
 }
 ```
 
+## Annotations
+
+If tag is present in scenario than processor will annotate generated method with appropriate annotation. 
+Processor supports few annotations out of the box (name is enough to generate annotation):
+- org.junit.Ignore
+- android.support.test.filters.FlakyTest
+- android.support.test.filters.SmallTest
+- android.support.test.filters.MediumTest
+- android.support.test.filters.LargeTest
+
+For custom annotations fully qualified name is required for processor to generate or it can be registered in arguments:
+
+```groovy
+kapt {
+    arguments {
+        arg("supportedAnnotations", "com.custom.Annotation1, com.custom.Annotation2")
+    }
+}
+```
+
 ## Changelog
+
+### 0.5.0 (2018-05-19)
+
+- generated method are using names from scenarios
+- support annotations
 
 ### 0.4.0 (2018-04-29)
 
